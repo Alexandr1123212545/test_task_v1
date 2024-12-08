@@ -67,7 +67,8 @@ class DataSetGenerator:
 
 
 if __name__ == "__main__":
-    gen = DataSetGenerator(num_records=100)
+    file_name = '.test_data_set.csv'
+    gen = DataSetGenerator(num_records=100, ready_file_name=file_name)
     data = gen.create_set()
 
-    data.to_csv('big_data.csv', index=False)
+    data.to_csv(file_name, index=False)
