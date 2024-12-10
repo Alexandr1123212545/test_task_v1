@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from multiprocessing import Pool
 
 import pandas as pd
+import numpy as np
 from faker import Faker
 
 class DataSetGenerator:
@@ -19,8 +20,9 @@ class DataSetGenerator:
         self.file_name = ready_file_name
         
         # salary limit
-        self.min_salary = 30_000
-        self.max_salary = 200_000
+        self.mean_salary = 200_000
+        self.std_dev = 20_000      # standart deviation
+
 
         # age limit
         current_date = datetime.now()
@@ -36,7 +38,8 @@ class DataSetGenerator:
         duplicate_size = chunk_size - unique_size
 
         names =  [f"Worker_{chunk_id}_{i}" for i in range(unique_size)]
-        salaries = [random.randint(self.min_salary, self.max_salary) if random.random() > 0.5 else '' for _ in range(unique_size)]
+        # salaries = [random.randint(self.min_salary, self.max_salary) if random.random() > 0.5 else '' for _ in range(unique_size)]
+        salaries = [int(np.random.normal(self.mean_salary, self.std_dev)) if np.random.random() > 0.5 else '' for _ in range(unique_size)]
         birth_dates = [fake.date_between_dates(date_start=self.start_date, date_end=self.end_date) if random.random() > 0.5 else '' for _ in range(unique_size)]
         times = [fake.time() if random.random() > 0.5 else '' for _ in range(unique_size)]
 
