@@ -19,9 +19,9 @@ class DataSetGenerator:
         self.duplicate_fraction = duplicate_fraction
         self.file_name = ready_file_name
         
-        # salary limit
-        self.mean_salary = 200_000
-        self.std_dev = 20_000      # standart deviation
+        # height limit
+        self.mean_height = 160.00
+        self.std_dev = 20.00      # standart deviation
 
 
         # age limit
@@ -37,18 +37,15 @@ class DataSetGenerator:
         unique_size = int(chunk_size * (1 - self.duplicate_fraction))   # create general part without duplicates
         duplicate_size = chunk_size - unique_size
 
-        names =  [f"Worker_{chunk_id}_{i}" for i in range(unique_size)]
-        # salaries = [random.randint(self.min_salary, self.max_salary) if random.random() > 0.5 else '' for _ in range(unique_size)]
-        salaries = [int(np.random.normal(self.mean_salary, self.std_dev)) if np.random.random() > 0.5 else '' for _ in range(unique_size)]
-        birth_dates = [fake.date_between_dates(date_start=self.start_date, date_end=self.end_date) if random.random() > 0.5 else '' for _ in range(unique_size)]
-        times = [fake.time() if random.random() > 0.5 else '' for _ in range(unique_size)]
+        names =  [f"{fake.name()}" for i in range(unique_size)]
+        height = [round(float(np.random.normal(self.mean_height, self.std_dev)), 2) if np.random.random() > 0.3 else '' for _ in range(unique_size)]
+        birth_dates = [str(fake.date_between_dates(date_start=self.start_date, date_end=self.end_date)) + ' ' + fake.time() if random.random() > 0.3 else '' for _ in range(unique_size)]
 
         df = pd.DataFrame(
             {
                 'Name': names ,
-                'Salary': salaries,
-                'BirthDate': birth_dates,
-                'Time': times
+                'Height': height,
+                'BirthDate': birth_dates
             }
         )
 
@@ -71,7 +68,7 @@ class DataSetGenerator:
 
 if __name__ == "__main__":
     file_name = '.test_data_set.csv'
-    gen = DataSetGenerator(num_records=1_000_000, ready_file_name=file_name)
+    gen = DataSetGenerator(num_records=1_000, ready_file_name=file_name)
     data = gen.create_set()
 
     data.to_csv(file_name, index=False)
