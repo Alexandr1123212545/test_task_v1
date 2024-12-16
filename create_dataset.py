@@ -67,8 +67,16 @@ class DataSetGenerator:
 
 
 if __name__ == "__main__":
-    file_name = '.test_data_set_10million.csv'
-    gen = DataSetGenerator(num_records=10_000_000, ready_file_name=file_name)
-    data = gen.create_set()
+    # file_name = '.test_data_set_10million.csv'
+    # gen = DataSetGenerator(num_records=10_000_000, ready_file_name=file_name)
+    # data = gen.create_set()
 
-    data.to_csv(file_name, index=False)
+    # data.to_csv(file_name, index=False)
+
+    import gzip
+    import shutil
+
+    # Открываем оригинальный файл CSV и сжимаем его в новый файл .gz
+    with open('.test_data_set_10million.csv', 'rb') as f_in:
+        with gzip.open('.test_data_set_10million.csv.gz', 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
